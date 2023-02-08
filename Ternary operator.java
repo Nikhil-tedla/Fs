@@ -48,35 +48,34 @@ Explanation:
 Given statement is N?Y?N?N:Y:N:Y -> N?(Y?(N?N:Y):N):Y
 N means "false", So the answer is Y.
 **/
-import java.util.*;
+ import java.util.*;
 class Test{
     public static void main (String[] args) {
-        Scanner sc=new Scanner(System.in);
-        String s=sc.nextLine();
-        System.out.println(helper(s));
-    }
-    public static String helper(String s){
-        Stack<Character>st=new Stack<>();
-        for(int i=s.length()-1;i>0;i--){
-            char c=s.charAt(i-1);
-            if(c==':'){
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+        Stack<Character> st = new Stack<>();
+        
+        for(int i = s.length()-1;i>=0;i--){
+            if(st.isEmpty()){
                 st.push(s.charAt(i));
             }
-            else if(c=='N' && !st.isEmpty()){
-                st.pop();
-                char temp=st.peek();
-                st.pop();
-                s.replace(s.substring(i,i+5),""+temp);
-                //i=i-3;
+            else if(s.charAt(i)==':') continue;
+            else if(s.charAt(i)=='?'){
+                i--;
+                if(s.charAt(i)=='Y'){
+                    char temp = st.pop();
+                    st.pop();
+                    st.push(temp);
+                }
+                else{
+                    st.pop();
+                }
             }
-            else if(c=='Y' && !st.isEmpty()){
-                char temp=st.peek();
-                st.pop();
-                s.replace(s.substring(i,i+5),""+temp);
-                    
-                
+            else{
+                st.push(s.charAt(i));
             }
-        }
-        return s;
+        }   
+        
+        System.out.println(st.pop());
     }
 }
