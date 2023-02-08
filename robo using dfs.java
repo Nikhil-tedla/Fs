@@ -53,45 +53,53 @@ X X X X X
 X X X X X 
 O X X X X 
 */
-import java.util.*;
+ import java.util.*;
 class Test{
-    public static void main (String[] args) {
+    //public static c=0;
+    public static void dfs(char arr[][],int i,int j,int m,int n){
+        if(i<0 ||j<0||i>=m||j>=n||arr[i][j]=='X' ||arr[i][j]=='K'){
+            return ;
+        }
+        arr[i][j]='K';
+        dfs(arr,i+1,j,m,n);
+        dfs(arr,i,j+1,m,n);
+        dfs(arr,i-1,j,m,n);
+        dfs(arr,i,j-1,m,n);
+        
+
+    }
+    public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         int n=sc.nextInt();
-        String[] arr=new String[n];
+        //int n=sc.nextInt();
+        char arr[][]=new char[n][n];
         for(int i=0;i<n;i++){
-            
-                arr[i]=sc.nextLine();
-            
-        }
-        char res[][]=new char[n][n];
-        //res=helper(arr);
-        for(int i=1;i<n-1;i++){
-            for(int j=1;j<n-1;j++){
-                if(arr[i].charAt(j)=='O'){
-                    arr[i]=arr[i].substring(0,j)+'X'+arr[i].substring(j+1,n);
-                    helper(arr,i,j);
-                }
-            }
-            
+            arr[i]=sc.next().toCharArray();
         }
         for(int i=0;i<n;i++){
             for(int j=0;j<n;j++){
-                System.out.print(arr[i].charAt(j));
+                if((i==0 || j==0 || i==n-1||j==n-1) && arr[i][j]=='O'){
+                    dfs(arr,i,j,n,n);
+                }
+                
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(arr[i][j]=='O'){
+                    arr[i][j]='X';
+                }
+                else if(arr[i][j]=='K'){
+                    arr[i][j]='O';
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                System.out.print(arr[i][j]+" ");
+                
             }
             System.out.println();
         }
-    }
-    public static void helper(String[] arr,int r,int c){
-        if(r>=1 && c>=1 && r<arr.length-2 && c<arr.length-2 && arr[r].charAt(c)!='O'){
-            //arr[r].charAt(c)='X';
-            //t++;
-            return ;
-        }
-        helper(arr,r+1,c);
-        helper(arr,r-1,c);
-        helper(arr,r,c+1);
-        helper(arr,r,c-1);
-        //System.out.println(t);
     }
 }
